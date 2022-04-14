@@ -17,20 +17,23 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'module_category_operations',
+    'category': 'Generic Modules/Human Resources',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'hr', 'mail', 'hr_recruitment'],
+    'depends': ['hr', 'mail', 'hr_recruitment', 'auth_oauth'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
+        #'security/ir.model.access.csv',
+        'views/hr_linkedin.xml',
+        'views/smart_recruitement.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    'external_dependencies':
+        {
+            'python': ['mechanize', 'linkedin'],
+        },
+    'application': False,
+    'auto_install': False,
+    'installable': True,
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_hr_job_kanban_linkedin" model="ir.ui.view">
+            <field name="name">hr.job.linkedin</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr_recruitment.view_hr_job_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@role='menuitem']" position="after">
+                    <div role="menuitem"><a type="object" name="publish_linkedin">Publier sur LinkedIn</a></div>
+                    <div role="menuitem"><a type="object" name="collect_profiles">Collecter des profils pour le poste</a></div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
