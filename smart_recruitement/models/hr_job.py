@@ -1,4 +1,5 @@
 # Selenium imports
+import os
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -9,6 +10,7 @@ from selenium.webdriver.chrome.options import Options
 
 # Odoo imports
 from odoo import fields, models, api
+
 
 class HrJob(models.Model):
     _inherit = 'hr.job'
@@ -23,7 +25,7 @@ class HrJob(models.Model):
         """ Button function for collecting profiles from linkedin """
         print("Collecting profiles from LinkedIn")
         chrome_options = Options()
-        #chrome_options.headless = True
+        # chrome_options.headless = True
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         # Search for profiles
         driver.get("https://www.google.com/")
@@ -39,13 +41,18 @@ class HrJob(models.Model):
         names = [title.text[:title.text.find('-')] for title in titles]
         print("Names found: ", names)
         print("Length of names: ", len(names))
+        cwd = os.getcwd()  # Get the current working directory (cwd)
+        path = cwd + '\odoo\custom_addons\smart_recruitement\models\config.txt'
         # Open linkedin
         driver.get("https://www.linkedin.com/uas/login")
+        file = open(path, 'r')
+        lines = file.readlines()
+        username = lines[0]
         time.sleep(3)
         email = driver.find_element(By.ID, "username")
-        email.send_keys("mouradbenahmed68@gmail.com")
+        email.send_keys(username)
         password = driver.find_element(By.ID, "password")
-        password.send_keys("workisbusiness12")
+        password.send_keys(password)
         time.sleep(3)
         password.send_keys(Keys.RETURN)
         time.sleep(3)
@@ -70,7 +77,7 @@ class HrJob(models.Model):
             'name': 'Profiles Linkedin',
             'type': 'ir.actions.act_window',
             'res_model': 'smart_recruitement.profile',
-            #'view_id': self.env.ref('hr_recruitment.view_hr_profiles_kanban_linkedin').id,
+            # 'view_id': self.env.ref('hr_recruitment.view_hr_profiles_kanban_linkedin').id,
             'view_mode': 'kanban',
             'view_type': 'kanban,list',
             'res_id': self.id,
