@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
 from . import hr_job
-from . import profile
+from . import hr_profile

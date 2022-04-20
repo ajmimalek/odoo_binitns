@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="view_hr_job_kanban_linkedin" model="ir.ui.view">
             <field name="name">hr.job.linkedin</field>
             <field name="model">hr.job</field>
@@ -12,6 +11,9 @@
                     <div role="menuitem"><a type="object" name="collect_profiles">Collecter des profils pour le poste</a></div>
                 </xpath>
             </field>
+        </record>
+        <record model="ir.ui.view" id="hr_recruitment.view_hr_profiles_kanban_linkedin">
+
         </record>
     </data>
 </odoo>
