@@ -28,10 +28,11 @@
         'security/ir.model.access.csv',
         'views/hr_linkedin.xml',
         'views/smart_recruitement.xml',
+        'views/recruitment_config_settings.xml',
     ],
     'external_dependencies':
         {
-            'python': ['mechanize', 'linkedin'],
+            'python': ['mechanize'],
         },
     'application': False,
     'auto_install': False,
