@@ -11,4 +11,3 @@ class HrProfile(models.Model):
     linkedin_url = fields.Char('LinkedIn URL')
     saved = fields.Boolean('Saved', default=False)
     job_id = fields.Many2one('hr.job', 'Job Name', ondelete='set null', index=True)
-    user_id = fields.Many2one('res.users', "Responsible", tracking=True)

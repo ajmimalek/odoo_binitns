@@ -4,8 +4,8 @@ from odoo import models, fields, api
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    li_username = fields.Char(string="User Name", help="Your Linkedin Username")
-    li_password = fields.Char(string="Password", help="Your Linkedin Password")
+    li_username = fields.Char(string="Nom d'utilisateur", help="Email ou téléphone")
+    li_password = fields.Char(string="Mot de Passe", help="Mot de passe Linkedin")
 
     def set_values(self):
 

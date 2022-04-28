@@ -3,7 +3,7 @@
     'name': "Gestion des recrutements",
 
     'summary': """
-        Une application permet de gérer les recrutements du BinitNS avec un algorithme de recrutement intelligent. """,
+        Une application permet de gérer les recrutements du BinitNS avec un algorithme de recrutement intelligent.""",
 
     'description': """
         - Elimination des candidatures en double, Pré-sélection & Classification des candidats, Collecte des profils LinkedIn en recherche d'emploi
@@ -20,20 +20,19 @@
     'category': 'Generic Modules/Human Resources',
     'version': '0.1',
 
-    # any module necessary for this one to work correctly
+    # any module necessary for this one to work correctly8
     'depends': ['hr', 'mail', 'hr_recruitment', 'auth_oauth'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
         'views/hr_linkedin.xml',
         'views/smart_recruitement.xml',
+        'views/oauth_view.xml',
         'views/recruitment_config_settings.xml',
+        'security/ir.model.access.csv',
     ],
-    'external_dependencies':
-        {
-            'python': ['mechanize'],
-        },
+    # only loaded in demonstration mode
+    'demo': [],
     'application': False,
     'auto_install': False,
     'installable': True,

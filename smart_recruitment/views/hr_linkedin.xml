@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_hr_job_kanban_linkedin" model="ir.ui.view">
+            <field name="name">hr.job.linkedin</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr_recruitment.view_hr_job_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@role='menuitem']" position="after">
+                    <div role="menuitem"><a type="object" name="publish_linkedin">Publier sur LinkedIn</a></div>
+                    <div role="menuitem"><a type="object" name="collect_profiles">Collecter des profils pour le poste</a></div>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_smart_recruitement_profile" model="ir.actions.act_window">
+            <field name="name">Profils LinkedIn</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">smart_recruitement.profile</field>
+            <field name="view_mode">kanban,list</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Pas de profils LinkedIn pour le moment.
+                </p>
+            </field>
+        </record>
+        <record id="view_hr_job_kanban_experiences" model="ir.ui.view">
+            <field name="name">hr.job.experiences</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr_recruitment.view_hr_job_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='row']/div[@class='col-6'][2]" position="inside">
+                    <div attrs="{'invisible': [('years_of_experience', '=', 'False')]}">
+                        Min <field name="years_of_experience"/> ans d’expérience
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_hr_job_form_experiences" model="ir.ui.view">
+            <field name="name">hr.job.years_of_experience</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='no_of_recruitment']" position="after">
+                    <field name="years_of_experience"/>
+                    <field name="post_image" widget="image"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
