@@ -9,3 +9,4 @@ class OAuthProviderLinkedin(models.Model):
     linkedIn are using this value for its API operations """
 
     client_secret = fields.Char(string='Client Secret', help="Only need LinkedIn, Twitter etc..")
+    access_token = fields.Char(string='Access Token', help="Only need LinkedIn, Twitter etc..")

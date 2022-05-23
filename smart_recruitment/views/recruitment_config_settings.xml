@@ -9,16 +9,16 @@
             <field name="inherit_id" ref="hr_recruitment.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='recruitment_process_div']" position="after">
-                    <h2>Connexion LinkedIn</h2>
+                    <h2>Identification LinkedIn</h2>
                     <div class="row mt16 o_settings_container">
                         <div class="col-xs-12 col-md-6 o_setting_box">
                             <group>
                                 <field name="li_username"/>
                                 <field name="li_password" password="True"/>
                             </group>
+                            <button name="get_access_token" string="Génerer un Access Token" type="object" class="btn btn-primary"/>
                         </div>
                     </div>
-
                 </xpath>
             </field>
         </record>

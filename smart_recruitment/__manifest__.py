@@ -30,6 +30,7 @@
         'views/oauth_view.xml',
         'views/recruitment_config_settings.xml',
         'security/ir.model.access.csv',
+        'data/auth_linkedin_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [],

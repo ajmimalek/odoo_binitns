@@ -2,6 +2,31 @@
 <odoo>
     <data>
         <menuitem id="smart_recruitement_root_menu" name="Gestion des recrutements" web_icon="smart_recruitement,static/description/icon.png"/>
-
+        <record id="applicant_show_cv" model="ir.ui.view">
+            <field name="name">hr.applicant.cv</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_kanban_view_applicant"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='o_kanban_record_subtitle']" position="after">
+                    <div class="text-center" style="margin-top: 5px;margin-bottom:5px;">
+                        <a target="_blank" t-att-href="record.cv_url.value">
+                            <i class="fa fa-file" role="img" aria-label="CV" title="CV"/> Consulter CV</a>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="cv_url"/>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="applicant_search_cv">
+            <field name="name">hr.applicant.cv.search</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_search_bis"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='attachment_ids']" position="after">
+                    <field name="cv_data" string="Contenu CV"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
