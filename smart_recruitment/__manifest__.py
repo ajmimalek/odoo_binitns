@@ -6,9 +6,8 @@
         Une application permet de gérer les recrutements du BinitNS avec un algorithme de recrutement intelligent.""",
 
     'description': """
-        - Elimination des candidatures en double, Pré-sélection & Classification des candidats, Collecte des profils LinkedIn en recherche d'emploi
+        - Elimination des candidatures en double, Pré-sélection & Classification des candidats
         - Création des Workflows pour automatiser l'envoi des mails de recrutement et des candidatures 
-        - Intégration & Synchronisation des offres d'emploi dans des outils tiers (Linkedin, TanitJobs, etc.)
     """,
 
     'author': "BinitNS - Binit Nearshore Services",
@@ -21,16 +20,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly8
-    'depends': ['hr', 'mail', 'hr_recruitment', 'auth_oauth'],
+    'depends': ['hr', 'mail', 'hr_recruitment'],
 
     # always loaded
     'data': [
-        'views/hr_linkedin.xml',
         'views/smart_recruitement.xml',
-        'views/oauth_view.xml',
-        'views/recruitment_config_settings.xml',
         'security/ir.model.access.csv',
-        'data/auth_linkedin_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [],

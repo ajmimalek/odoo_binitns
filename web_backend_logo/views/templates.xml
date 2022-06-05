@@ -1,0 +1,13 @@
+<odoo>
+    <template id="assets_backend" name="company logo assets" inherit_id="web.assets_backend">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/web_backend_logo/static/src/js/menu.js"/>
+        </xpath>
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" href="/web_backend_logo/static/src/css/menu.css"/>
+        </xpath>
+    </template>
+    <data>
+        <menuitem id="web_backend_theme_root_menu" web_icon="web_backend_logo,static/description/icon.png"/>
+    </data>
+</odoo>

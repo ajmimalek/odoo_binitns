@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- Adding Icon to Module -->
         <menuitem id="smart_recruitement_root_menu" name="Gestion des recrutements" web_icon="smart_recruitement,static/description/icon.png"/>
+        <!-- Adding CV Attachment link to Applicant Kanban View -->
         <record id="applicant_show_cv" model="ir.ui.view">
             <field name="name">hr.applicant.cv</field>
             <field name="model">hr.applicant</field>
@@ -18,6 +20,7 @@
                 </xpath>
             </field>
         </record>
+        <!-- Adding CV Data Search field to Applicant View -->
         <record model="ir.ui.view" id="applicant_search_cv">
             <field name="name">hr.applicant.cv.search</field>
             <field name="model">hr.applicant</field>
@@ -28,5 +31,55 @@
                 </xpath>
             </field>
         </record>
+        <!-- Adding Keyword_tags field to Job Application -->
+        <record model="ir.ui.view" id="view_hr_job_keywords">
+            <field name="name">hr.job.keywords</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='address_id']" position="after">
+                    <field name="keywords_tags" widget="many2many_tags" options="{'no_create_edit': 'False', 'color_field': 'tag_color'}"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- List View for Keywords Tags -->
+        <record model="ir.ui.view" id="tags_tree">
+            <field name="name">smart_recruitment.keywords.tree</field>
+            <field name="model">smart_recruitment.keywords</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <!-- Form View for Keywords Tags -->
+        <record model="ir.ui.view" id="tags_form">
+            <field name="name">smart_recruitment.keywords.form</field>
+            <field name="model">smart_recruitment.keywords</field>
+            <field name="arch" type="xml">
+                <form string="Modification Compétence">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <!-- Main View for Keywords Tags -->
+        <record id="action_tags" model="ir.actions.act_window">
+            <field name="name">Mot Clés Compétences</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">smart_recruitment.keywords</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'create' : False}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Veuillez ajouter des mots clés des compétences dans les formulaires des postes afin de les modifier ici.
+                </p>
+            </field>
+        </record>
+        <!-- Adding Keywords Tags to Recruitment Menu -->
+        <menuitem id="menu_recruitment_tags" name="Mot Clés"
+                  parent="hr_recruitment.menu_hr_recruitment_configuration" sequence="6"
+                  action="action_tags"/>
     </data>
 </odoo>
