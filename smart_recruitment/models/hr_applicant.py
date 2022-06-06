@@ -21,6 +21,7 @@ class HrApplicant(models.Model):
     cv_url = fields.Char(string="CV File URL", compute="_get_cv_url", store=True)
     # List of CV Keywords to search
     cv_data = fields.Text(string="CV", compute="_get_cv_data", store=True)
+    matchPercentage = fields.Float(string="Match Percentage", default=48.85)
 
     @api.depends('message_main_attachment_id')
     @api.model
@@ -152,9 +153,22 @@ class HrApplicant(models.Model):
             """Elimination par mots clés"""
             # Get a list of Job IDs
             job_ids = self.env['hr.job'].search([]).mapped('id')
+            # Search for duplicate applications
+            stage_id = self.env['hr.recruitment.stage'].search([('name', '=', 'Candidatures en double')]).id
             # Get Applicants & Keywords for each Job ID
             for job_id in job_ids:
                 print("Job ID : ", job_id)
+                # Eliminer candidature en double pour ce job_id
+                self.env.cr.execute(
+                    """SELECT partner_name, cv_data FROM hr_applicant WHERE job_id = %s;""", (job_id,))
+                applications = self.env.cr.fetchall()
+                duplicate_apps = list(set([app for app in applications
+                                                  if applications.count(app) > 1]))
+                for dup in duplicate_apps:
+                    count_duplicates = self.search_count([('partner_name', '=', dup[0]), ('cv_data', '=', dup[1])])
+                    self.search([('partner_name', '=', dup[0]), ('cv_data', '=', dup[1])], limit=count_duplicates-1).write({
+                        'stage_id': stage_id,
+                        'kanban_state': 'blocked'})
                 # Get Keywords for each Job ID
                 self.env.cr.execute(
                     """SELECT smart_recruitment_keywords_id FROM hr_job_smart_recruitment_keywords_rel WHERE hr_job_id = %s;""",
@@ -193,10 +207,8 @@ class HrApplicant(models.Model):
             # Using list comprehension + set() + count()
             duplicate_application = list(set([app for app in mails
                             if mails.count(app) > 1]))
-            # Search for duplicate applications
-            stage_id = self.env['hr.recruitment.stage'].search([('name', '=', 'Candidatures en double')]).id
             for dup in duplicate_application:
-                duplicate = self.search([('email_from', '=', dup[0]), ('cv_data', '=', dup[1])]).write({
+                self.search([('email_from', '=', dup[0]), ('cv_data', '=', dup[1])]).write({
                     'stage_id': stage_id,
                     'kanban_state': 'blocked'})
         return res

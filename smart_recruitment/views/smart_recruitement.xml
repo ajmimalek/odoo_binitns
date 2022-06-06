@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <!-- Adding Icon to Module -->
-        <menuitem id="smart_recruitement_root_menu" name="Gestion des recrutements" web_icon="smart_recruitement,static/description/icon.png"/>
+        <menuitem id="smart_recruitement_root_menu" name="Gestion des recrutements" web_icon="smart_recruitment,static/description/icon.png"/>
         <!-- Adding CV Attachment link to Applicant Kanban View -->
         <record id="applicant_show_cv" model="ir.ui.view">
             <field name="name">hr.applicant.cv</field>
@@ -17,6 +17,20 @@
                 </xpath>
                 <xpath expr="//field[@name='active']" position="after">
                     <field name="cv_url"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- Adding Matching Percentage Progress Bar to Applicant Kanban View -->
+        <record id="applicant_matching_bar" model="ir.ui.view">
+            <field name="name">hr.applicant.matching</field>
+            <field name="model">hr.applicant</field>
+            <field name="inherit_id" ref="hr_recruitment.hr_kanban_view_applicant"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='o_kanban_record_bottom mt4']" position="after">
+                    <field name="matchPercentage" widget="progressbar" />
+                </xpath>
+                <xpath expr="//field[@name='active']" position="after">
+                    <field name="matchPercentage"/>
                 </xpath>
             </field>
         </record>
