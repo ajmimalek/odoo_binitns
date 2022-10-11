@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="linkedin_integration_root_menu" name="Intégration LinkedIn" web_icon="linkedin_integration,static/description/icon.png"/>
+    </data>
+</odoo>

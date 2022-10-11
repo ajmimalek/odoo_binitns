@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly8
-    'depends': ['hr', 'mail', 'hr_recruitment'],
+    'depends': ['hr', 'mail', 'hr_recruitment', 'website_hr_recruitment'],
 
     # always loaded
     'data': [

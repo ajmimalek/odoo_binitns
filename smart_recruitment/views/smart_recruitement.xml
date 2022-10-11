@@ -2,7 +2,8 @@
 <odoo>
     <data>
         <!-- Adding Icon to Module -->
-        <menuitem id="smart_recruitement_root_menu" name="Gestion des recrutements" web_icon="smart_recruitment,static/description/icon.png"/>
+        <menuitem id="smart_recruitement_root_menu" name="Gestion des recrutements"
+                  web_icon="smart_recruitment,static/description/icon.png"/>
         <!-- Adding CV Attachment link to Applicant Kanban View -->
         <record id="applicant_show_cv" model="ir.ui.view">
             <field name="name">hr.applicant.cv</field>
@@ -12,7 +13,9 @@
                 <xpath expr="//div[@class='o_kanban_record_subtitle']" position="after">
                     <div class="text-center" style="margin-top: 5px;margin-bottom:5px;">
                         <a target="_blank" t-att-href="record.cv_url.value">
-                            <i class="fa fa-file" role="img" aria-label="CV" title="CV"/> Consulter CV</a>
+                            <i class="fa fa-file" role="img" aria-label="CV" title="CV"/>
+                            Consulter CV
+                        </a>
                     </div>
                 </xpath>
                 <xpath expr="//field[@name='active']" position="after">
@@ -27,7 +30,7 @@
             <field name="inherit_id" ref="hr_recruitment.hr_kanban_view_applicant"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@class='o_kanban_record_bottom mt4']" position="after">
-                    <field name="matchPercentage" widget="progressbar" />
+                        <field name="matchPercentage" widget="progressbar"/>
                 </xpath>
                 <xpath expr="//field[@name='active']" position="after">
                     <field name="matchPercentage"/>
@@ -52,7 +55,8 @@
             <field name="inherit_id" ref="hr.view_hr_job_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='address_id']" position="after">
-                    <field name="keywords_tags" widget="many2many_tags" options="{'no_create_edit': 'False', 'color_field': 'tag_color'}"/>
+                    <field name="keywords_tags" widget="many2many_tags"
+                           options="{'no_create_edit': 'False', 'color_field': 'tag_color'}"/>
                 </xpath>
             </field>
         </record>
@@ -87,7 +91,8 @@
             <field name="context">{'create' : False}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Veuillez ajouter des mots clés des compétences dans les formulaires des postes afin de les modifier ici.
+                    Veuillez ajouter des mots clés des compétences dans les formulaires des postes afin de les modifier
+                    ici.
                 </p>
             </field>
         </record>

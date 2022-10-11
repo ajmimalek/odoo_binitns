@@ -6,5 +6,5 @@ class SkillsKeywords(models.Model):
     _description = 'Liste des mots clés pour une offre d\'emploi'
 
     name = fields.Char(string="Compétence", required=True)
-    tag_color = fields.Integer(string='Coleur du Tag', default=4)
+    tag_color = fields.Integer(string='Couleur du Tag', default=4)
 
