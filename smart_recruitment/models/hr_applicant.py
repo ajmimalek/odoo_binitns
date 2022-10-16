@@ -222,7 +222,16 @@ class HrApplicant(models.Model):
                                 print("Applicant Name : ", applic.mapped('name'))
                                 # Turn kanban_state to blocked
                                 applic.write({'kanban_state': 'blocked'})
-                            break
+                        else:
+                            print("Cette candidature correspond aux mots clés")
+                            print("Keyword : ", keyword)
+                            applic = self.search([('cv_data', '=', applicant)])
+                            for app in applic.stage_id:
+                                print("Stage Name : ", app.name)
+                            if applic.stage_id.name == 'Qualification initiale':
+                                print("Applicant Name : ", applic.mapped('name'))
+                                # Turn kanban_state to normal
+                                applic.write({'kanban_state': 'normal'})
             """Elimination des candidatures en double"""
             # Create section "Candidatures en double"
             if self.env['hr.recruitment.stage'].search([('name', '=', 'Candidatures en double')]):

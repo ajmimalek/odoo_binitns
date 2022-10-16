@@ -8,3 +8,9 @@ class SkillsKeywords(models.Model):
     name = fields.Char(string="Compétence", required=True)
     tag_color = fields.Integer(string='Couleur du Tag', default=4)
 
+    @api.constrains('name')
+    def _check_name(self):
+        from textblob import TextBlob
+        for record in self:
+            if TextBlob(record.name).correct() != record.name:
+                raise models.ValidationError("Veuillez vérifier l'orthographe de votre mot clé, Vous voulez peut-être dire: %s" % TextBlob(record.name).correct())
