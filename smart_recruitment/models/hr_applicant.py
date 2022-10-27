@@ -173,10 +173,12 @@ class HrApplicant(models.Model):
                 print("Votre CV est identique à " + str(matchPercentage) + "% par rapport à l'offre d'emploi")
                 elem.matchPercentage = float(matchPercentage)
 
+    @api.model
     def fields_view_get(self, view_id=None, view_type='kanban', toolbar=False, submenu=False):
-        res = super(HrApplicant, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
+        res = super().fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
                                                        submenu=submenu)
         if view_type == 'kanban':
+            print("View Type : ", view_type)
             """Elimination par mots clés"""
             # Get a list of Job IDs
             job_ids = self.env['hr.job'].search([]).mapped('id')
@@ -321,6 +323,11 @@ class HrApplicant(models.Model):
                             'partner_name': candidat_tanitjobs,
                             'stage_id': 1})
                     print("------------------------------------------------------")
+            if poste_tanitjobs == poste_keejob:
+                print("Candidature en double")
+                self.search([('name', '=', candidat_tanitjobs + " (TanitJobs)")]).write({
+                    'stage_id': stage_id_double,
+                    'kanban_state': 'blocked'})
             # Same applications from same source
             self.env.cr.execute(
                 """SELECT email_from, cv_data FROM hr_applicant WHERE job_id IS NULL;""")
