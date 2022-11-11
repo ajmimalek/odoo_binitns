@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from textblob import TextBlob
 
 
 class SkillsKeywords(models.Model):
@@ -10,7 +11,7 @@ class SkillsKeywords(models.Model):
 
     @api.constrains('name')
     def _check_name(self):
-        from textblob import TextBlob
         for record in self:
             if TextBlob(record.name).correct() != record.name:
-                raise models.ValidationError("Veuillez vérifier l'orthographe de votre mot clé, Vous voulez peut-être dire: %s" % TextBlob(record.name).correct())
+                message = "Veuillez vérifier l'orthographe de votre mot clé, Vous voulez peut-être dire: %s" % str(TextBlob(record.name).correct())
+                raise models.ValidationError(message)

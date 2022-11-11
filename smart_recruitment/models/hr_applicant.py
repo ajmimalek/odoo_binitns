@@ -1,5 +1,37 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
+import io
+import pdfminer
+from pdfminer.converter import TextConverter
+from pdfminer.pdfinterp import PDFPageInterpreter
+from pdfminer.pdfinterp import PDFResourceManager
+from pdfminer.pdfpage import PDFPage
+
+# Perform layout analysis for all text
+laparams = pdfminer.layout.LAParams()
+setattr(laparams, 'all_texts', True)
+
+
+def extract_text_from_pdf(pdf_path):
+    resource_manager = PDFResourceManager()
+    fake_file_handle = io.StringIO()
+    converter = TextConverter(resource_manager, fake_file_handle, laparams=laparams)
+    page_interpreter = PDFPageInterpreter(resource_manager, converter)
+
+    with open(pdf_path, 'rb') as fh:
+        for page in PDFPage.get_pages(fh,
+                                      caching=True,
+                                      check_extractable=True):
+            page_interpreter.process_page(page)
+
+        text = fake_file_handle.getvalue()
+
+    # close open handles
+    converter.close()
+    fake_file_handle.close()
+
+    if text:
+        return text
 
 
 def clean_data(text):
@@ -56,8 +88,7 @@ class HrApplicant(models.Model):
                     extension = filename.split(".")[-1]
                     print("C'est un fichier :", extension)
                     if extension == "pdf":
-                        from pdfminer.high_level import extract_text
-                        text = extract_text(path).split('\n')
+                        text = extract_text_from_pdf(path).split('\n')
                         text = [" ".join(word.split()) for word in text]
                         # Remove empty strings
                         while "" in text:
@@ -113,13 +144,13 @@ class HrApplicant(models.Model):
                         # Remove empty strings
                         while "" in text:
                             text.remove("")
-                        #print(text)
+                        # print(text)
                         elem.write({'cv_data': "\n".join(text)})
                     elif extension == "docx":
                         import docx2txt as d2t
                         text = d2t.process(path)
                         text = clean_data(text)
-                        #print(text)
+                        # print(text)
                         elem.write({'cv_data': "\n".join(text)})
                     elif extension == "doc":
                         print("Converting doc file to docx and storing in the place of the old file")
@@ -135,7 +166,7 @@ class HrApplicant(models.Model):
                         import docx2txt as d2t
                         text = d2t.process(path + ".docx")
                         text = clean_data(text)
-                        #print(text)
+                        # print(text)
                         elem.write({'cv_data': "\n".join(text)})
                     else:
                         print("Ce type de fichier n'est pas supporté")
@@ -176,14 +207,15 @@ class HrApplicant(models.Model):
     @api.model
     def fields_view_get(self, view_id=None, view_type='kanban', toolbar=False, submenu=False):
         res = super().fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
-                                                       submenu=submenu)
+                                      submenu=submenu)
         if view_type == 'kanban':
             print("View Type : ", view_type)
             """Elimination par mots clés"""
             # Get a list of Job IDs
             job_ids = self.env['hr.job'].search([]).mapped('id')
             # Search for duplicate applications
-            stage_id_double = self.env['hr.recruitment.stage'].search([('name', '=', 'Candidatures en double')], limit=1).id
+            stage_id_double = self.env['hr.recruitment.stage'].search([('name', '=', 'Candidatures en double')],
+                                                                      limit=1).id
             # Get Applicants & Keywords for each Job ID
             for job_id in job_ids:
                 print("Job ID : ", job_id)
@@ -196,7 +228,8 @@ class HrApplicant(models.Model):
                                            if applications.count(app) > 1]))
                 print("Duplicate Applications : ", duplicate_apps)
                 for dup in duplicate_apps:
-                    count_duplicates = self.search_count([('partner_name', '=', dup[0]), ('cv_data', '=', dup[1]), ('job_id', '=', job_id)])
+                    count_duplicates = self.search_count(
+                        [('partner_name', '=', dup[0]), ('cv_data', '=', dup[1]), ('job_id', '=', job_id)])
                     print("Count Duplicates : ", count_duplicates)
                     self.search([('partner_name', '=', dup[0]), ('cv_data', '=', dup[1])],
                                 limit=count_duplicates - 1).write({
@@ -275,7 +308,8 @@ class HrApplicant(models.Model):
                                 # Create job
                                 self.env['hr.job'].create({'name': poste_keejob})
                         if 'Candidat' in mailapp:
-                            candidat_keejob = mailapp[mailapp.find('Candidat:') + len('Candidat: '): mailapp.find('Région')]
+                            candidat_keejob = mailapp[
+                                              mailapp.find('Candidat:') + len('Candidat: '): mailapp.find('Région')]
                             print("Candidat : ", candidat_keejob)
                     # add the applicant to the job
                     if self.search([('name', '=', candidat_keejob + " (Keejob)")]):
@@ -296,7 +330,7 @@ class HrApplicant(models.Model):
                         if '"' in mailapp and mailapp.count('"') == 1:
                             # merge next element with current element
                             mailapp = mailapp + " " + mail_application_list[mail_application_list.index(mailapp) + 1]
-                            #print("Mail Application merged : ", mailapp)
+                            # print("Mail Application merged : ", mailapp)
                         if 'Nom:' in mailapp:
                             candidat_tanitjobs = mailapp[mailapp.find('Nom:') + len('Nom:'): mailapp.find('Email')]
                             print("Candidat : ", candidat_tanitjobs)
